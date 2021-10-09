@@ -6,6 +6,7 @@ import {
   StyleSheet,
   TextInput,
   Platform,
+  FlatList,
 } from 'react-native';
 import {Button} from '../Components/Button';
 import {SkillCard} from '../Components/SkillCard';
@@ -33,9 +34,12 @@ export default function Home() {
 
       <Text style={styles.subTitle}>My Skills:</Text>
 
-      {mySkills.map(skill => (
-        <SkillCard key={skill} skill={skill} />
-      ))}
+      <FlatList
+        showsVerticalScrollIndicator={false}
+        data={mySkills}
+        keyExtractor={item => item}
+        renderItem={({item}) => <SkillCard skill={item} />}
+      />
     </SafeAreaView>
   );
 }

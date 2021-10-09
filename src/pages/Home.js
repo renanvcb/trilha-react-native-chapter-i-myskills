@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 
 import {
   SafeAreaView,
@@ -10,6 +10,13 @@ import {
 } from 'react-native';
 
 export default function Home() {
+  const [newSkill, setNewSkill] = useState('');
+  const [mySkills, setMySkills] = useState([]);
+
+  function handleAddNewSkill() {
+    setMySkills(oldState => [...oldState, newSkill]);
+  }
+
   return (
     <SafeAreaView style={styles.container}>
       <Text style={styles.title}>Welcome, Renan</Text>
@@ -18,13 +25,26 @@ export default function Home() {
         style={styles.input}
         placeholder="New Skill"
         placeholderTextColor="#555"
+        onChangeText={setNewSkill}
       />
 
-      <TouchableOpacity style={styles.button} activeOpacity={0.7}>
+      <TouchableOpacity
+        style={styles.button}
+        activeOpacity={0.7}
+        onPress={handleAddNewSkill}>
         <Text style={styles.buttonText}>Add</Text>
       </TouchableOpacity>
 
-      <Text style={[styles.title, {marginTop: 50}]}>My Skills</Text>
+      <Text style={styles.subTitle}>My Skills:</Text>
+
+      {mySkills.map(skill => (
+        <TouchableOpacity
+          key={skill}
+          style={styles.buttonSkill}
+          activeOpacity={0.7}>
+          <Text style={styles.textSkill}>{skill}</Text>
+        </TouchableOpacity>
+      ))}
     </SafeAreaView>
   );
 }
@@ -40,8 +60,14 @@ const styles = StyleSheet.create({
     fontSize: 24,
     fontWeight: 'bold',
   },
+  subTitle: {
+    color: '#FFF',
+    fontSize: 23,
+    fontWeight: 'bold',
+    marginTop: 50,
+  },
   input: {
-    backgroundColor: '#1F1e25',
+    backgroundColor: '#1F1E25',
     color: '#FFF',
     fontSize: 18,
     padding: Platform.OS === 'ios' ? 15 : 10,
@@ -58,6 +84,18 @@ const styles = StyleSheet.create({
   buttonText: {
     color: '#FFF',
     fontSize: 17,
+    fontWeight: 'bold',
+  },
+  buttonSkill: {
+    backgroundColor: '#1F1E25',
+    padding: 15,
+    borderRadius: 50,
+    alignItems: 'center',
+    marginVertical: 10,
+  },
+  textSkill: {
+    color: '#FFF',
+    fontSize: 22,
     fontWeight: 'bold',
   },
 });

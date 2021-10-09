@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 
 import {
   SafeAreaView,
@@ -14,14 +14,28 @@ import {SkillCard} from '../Components/SkillCard';
 export default function Home() {
   const [newSkill, setNewSkill] = useState('');
   const [mySkills, setMySkills] = useState([]);
+  const [greeting, setGreeting] = useState('');
 
   function handleAddNewSkill() {
     setMySkills(oldState => [...oldState, newSkill]);
   }
 
+  useEffect(() => {
+    const currentHour = new Date().getHours();
+    if (currentHour < 12) {
+      setGreeting('Good morning!');
+    } else if (currentHour >= 12 && currentHour < 18) {
+      setGreeting('Good afternoon!');
+    } else {
+      setGreeting('Good night!');
+    }
+  }, []);
+
   return (
     <SafeAreaView style={styles.container}>
       <Text style={styles.title}>Welcome, Renan</Text>
+
+      <Text style={styles.greetings}>{greeting}</Text>
 
       <TextInput
         style={styles.input}
@@ -55,11 +69,14 @@ const styles = StyleSheet.create({
     fontSize: 24,
     fontWeight: 'bold',
   },
+  greetings: {
+    color: '#FFF',
+  },
   subTitle: {
     color: '#FFF',
     fontSize: 23,
     fontWeight: 'bold',
-    marginTop: 50,
+    marginTop: 30,
   },
   input: {
     backgroundColor: '#1F1E25',

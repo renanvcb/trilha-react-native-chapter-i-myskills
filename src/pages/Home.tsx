@@ -29,6 +29,12 @@ export default function Home() {
     setMySkills(oldState => [...oldState, data]);
   }
 
+  function handleRemoveSkill(id: string) {
+    setMySkills(oldstate => oldstate.filter(
+      skill => skill.id !== id
+    ));
+  }
+
   useEffect(() => {
     const currentHour = new Date().getHours();
     if (currentHour < 12) {
@@ -64,7 +70,12 @@ export default function Home() {
         showsVerticalScrollIndicator={false}
         data={mySkills}
         keyExtractor={item => item.id}
-        renderItem={({item}) => <SkillCard skill={item.name} />}
+        renderItem={({item}) => (
+          <SkillCard
+            skill={item.name}
+            onPress={() => handleRemoveSkill(item.id)}
+          />
+        )}
       />
     </SafeAreaView>
   );

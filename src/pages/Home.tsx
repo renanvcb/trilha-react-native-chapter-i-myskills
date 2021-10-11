@@ -13,11 +13,20 @@ import {SkillCard} from '../Components/SkillCard';
 
 export default function Home() {
   const [newSkill, setNewSkill] = useState('');
-  const [mySkills, setMySkills] = useState([]);
+  const [mySkills, setMySkills] = useState<ISkillData[]>([]);
   const [greeting, setGreeting] = useState('');
 
+  interface ISkillData {
+    id: string;
+    name: string;
+  }
+
   function handleAddNewSkill() {
-    setMySkills(oldState => [...oldState, newSkill]);
+    const data = {
+      id: String(new Date().getTime()),
+      name: newSkill
+    }
+    setMySkills(oldState => [...oldState, data]);
   }
 
   useEffect(() => {
@@ -44,15 +53,18 @@ export default function Home() {
         onChangeText={setNewSkill}
       />
 
-      <Button onPress={handleAddNewSkill} />
+      <Button
+        title="Add"
+        onPress={handleAddNewSkill}
+      />
 
       <Text style={styles.subTitle}>My Skills:</Text>
 
       <FlatList
         showsVerticalScrollIndicator={false}
         data={mySkills}
-        keyExtractor={item => item}
-        renderItem={({item}) => <SkillCard skill={item} />}
+        keyExtractor={item => item.id}
+        renderItem={({item}) => <SkillCard skill={item.name} />}
       />
     </SafeAreaView>
   );
